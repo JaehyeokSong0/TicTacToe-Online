@@ -24,17 +24,19 @@ var server = http.createServer(app);
 /**
  * Setup Socket env
  * https://jsikim1.tistory.com/165
+ * https://poiemaweb.com/nodejs-socketio
+ * https://berkbach.com/tagged/socketio
  */
-var io = require('socket.io')(server);
-io.on('connection',function(socket) {
-  console.log(socket.id, 'Connected');
-  socket.emit('msg',`${socket.id} connected.`);
-  socket.on('msg',function(data){
-    console.log(socket.id,data);
-    socket.emit('msg',`received "${socket.id}"` );
-  });
-});
 
+ var io = require('socket.io')(server,{cors: {origin:"*"}});
+ io.on('connection',function(socket) {
+   console.log(socket.id, 'Connected');
+   socket.emit('msg',`${socket.id} connected.`);
+   socket.on('msg',function(data){
+     console.log(socket.id,data);
+     socket.emit('msg',`received "${data}"` );
+   });
+ });
 
 /**
  * Listen on provided port, on all network interfaces.
