@@ -22,6 +22,21 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * Setup Socket env
+ * https://jsikim1.tistory.com/165
+ */
+var io = require('socket.io')(server);
+io.on('connection',function(socket) {
+  console.log(socket.id, 'Connected');
+  socket.emit('msg',`${socket.id} connected.`);
+  socket.on('msg',function(data){
+    console.log(socket.id,data);
+    socket.emit('msg',`received "${socket.id}"` );
+  });
+});
+
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 
