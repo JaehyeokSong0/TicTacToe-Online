@@ -7,6 +7,9 @@
 var app = require('../app');
 var debug = require('debug')('tictactoe-online:server');
 var http = require('http');
+const {
+  send
+} = require('process');
 
 /**
  * Get port from environment and store in Express.
@@ -39,6 +42,7 @@ io.on('connection', (socket) => {
   var room = ['room1', 'room2'];
   socket.on('joinRoom', joinRoom);
   socket.on('leaveRoom', leaveRoom);
+  socket.on('sendMsg', sendMsg);
 
   async function joinRoom(num, name) {
     await socket.join(room[num]);
@@ -48,8 +52,7 @@ io.on('connection', (socket) => {
     io.to(room[num]).emit('joinRoom', num, name);
     if (numClients === 1) {
       io.to(room[num]).emit('notFullRoom');
-    }
-    else if (numClients === 2) {
+    } else if (numClients === 2) {
       io.to(room[num]).emit('fullRoom');
     }
   };
@@ -58,6 +61,10 @@ io.on('connection', (socket) => {
     await socket.leave(room[num]);
     io.to(room[num]).emit('leaveRoom', num, name);
     io.to(room[num]).emit('notFullRoom');
+  };
+
+  function sendMsg(num, name, msg) {
+    io.to(room[num]).emit('sendMsg', name, msg);
   };
 });
 

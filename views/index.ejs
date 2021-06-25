@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="stylesheets/tictactoe.css" type="text/css">
+  <link rel="stylesheet" href="stylesheets/messages.css" type="text/css">
 </head>
 
 <body>
@@ -12,12 +13,16 @@
   <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <select id = "op">
+  <select id="op">
     <option value="Room1">Room1</option>
     <option value="Room2">Room2</option>
   </select>
-  <button id = "startBtn" style="display: none;">START</button>
+  <button id="startBtn" style="display: none;">START</button>
   <ul id="messages"></ul>
+  <form id="chat" action="">
+    <input id="chatBox" placeholder="상대방과 자유롭게 채팅하세요." />
+    <button>Send</button>
+  </form>
 
   <script>
     $(() => {
@@ -36,23 +41,33 @@
         socket.emit('joinRoom', num, name);
       });
 
+      $('#chat').submit((e) => {
+        e.preventDefault();
+        socket.emit('sendMsg', num, name, $('#chatBox').val());
+        $('#chatBox').val("");
+      });
+
+      socket.on('sendMsg', (name, msg) => {
+        $('#messages').append($('<li>').text(name + " : " + msg));
+      })
+
       socket.on('joinRoom', (num, name) => {
-        $('#messages').append($('<li>').text(name + ' joined ' + room[num]));
+        $('#messages').append($('<li>').text("[System] " + name + ' joined ' + room[num]));
       });
 
       socket.on('leaveRoom', (num, name) => {
-        $('#messages').append($('<li>').text(name + ' leaved ' + room[num]));
+        $('#messages').append($('<li>').text("[System] " + name + ' leaved ' + room[num]));
         $('#startBtn').hide();
       });
 
       socket.on('notFullRoom', () => {
         $('#startBtn').hide();
-        $('#messages').append($('<li>').text("상대가 없습니다. 상대가 들어올 때까지 기다려주세요."));
+        $('#messages').append($('<li>').text("[System] 상대가 없습니다. 상대가 들어올 때까지 기다려주세요."));
       })
 
       socket.on('fullRoom', () => {
         $('#startBtn').show();
-        $('#messages').append($('<li>').text("방이 다 찼습니다. start 버튼을 클릭해 게임을 시작해주세요."));
+        $('#messages').append($('<li>').text("[System] 방이 다 찼습니다. start 버튼을 클릭해 게임을 시작해주세요."));
       })
     });
   </script>
