@@ -28,15 +28,32 @@ var server = http.createServer(app);
  * https://berkbach.com/tagged/socketio
  */
 
- var io = require('socket.io')(server,{cors: {origin:"*"}});
- io.on('connection',function(socket) {
-   console.log(socket.id, 'Connected');
-   socket.emit('msg',`${socket.id} connected.`);
-   socket.on('msg',function(data){
-     console.log(socket.id,data);
-     socket.emit('msg',`received "${data}"` );
-   });
- });
+var io = require('socket.io')(server, {
+  cors: {
+    origin: "*"
+  }
+});
+
+io.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  var room = ['room1', 'room2'];
+  socket.on('joinRoom', joinRoom);
+  socket.on('leaveRoom', leaveRoom);
+
+  async function joinRoom(num, name) {
+    await socket.join(room[num]);
+    console.log(name + ' join a ' + room[num]);
+    io.to(room[num]).emit('joinRoom', num, name);
+  };
+  async function leaveRoom(num, name) {
+    await socket.leave(room[num]);
+    console.log(name + ' leave a ' + room[num]);
+    io.to(room[num]).emit('leaveRoom', num, name);
+  };
+});
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -75,9 +92,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -100,8 +117,8 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
   debug('Listening on ' + bind);
 }

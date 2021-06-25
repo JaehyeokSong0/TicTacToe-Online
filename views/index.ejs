@@ -12,25 +12,38 @@
   <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <div id = "msgBox">
-    <input id="msg" type="text" style="width:100%">
-  </div>
+  <select>
+    <option value="Room1">Room1</option>
+    <option value="Room2">Room2</option>
+  </select>
+  <ul id="messages"></ul>
 
   <script>
-    var socket = io.connect('http://localhost:3000');
-    socket.on('msg',function(data){
-      $("#msgBox").append(`${data}<br>`);
-    });
+    $(() => {
+      const name = prompt('이름을 입력하세요');
+      const socket = io();
+      let room = ['room1', 'room2'];
+      let num = 0;
 
-    $("#msg").on('keyup', function () {
-      if (window.event.keyCode == 13) { // If pressed enter key
-        $("#msgBox").append(`Client : "${$(this).val()}".<br>`);
-        socket.emit('msg', $(this).val());
-        $(this).val("");
-      }
+      socket.emit('joinRoom', num, name);
+
+      $('select').change(() => {
+        socket.emit('leaveRoom', num, name);
+        num++;
+        num = num % 2; //본격적인 구현 시 로직 수정 필요
+        socket.emit('joinRoom', num, name);
+      });
+
+      socket.on('leaveRoom', (num, name) => {
+        $('#messages').append($('<li>').text(name + ' leaved ' + room[num]));
+      });
+
+      socket.on('joinRoom', (num, name) => {
+        $('#messages').append($('<li>').text(name + ' joined ' + room[num]));
+      });
     });
   </script>
-  
+
 </body>
 
 </html>
