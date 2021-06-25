@@ -23,9 +23,6 @@ var server = http.createServer(app);
 
 /**
  * Setup Socket env
- * https://jsikim1.tistory.com/165
- * https://poiemaweb.com/nodejs-socketio
- * https://berkbach.com/tagged/socketio
  */
 
 var io = require('socket.io')(server, {
@@ -46,12 +43,21 @@ io.on('connection', (socket) => {
   async function joinRoom(num, name) {
     await socket.join(room[num]);
     console.log(name + ' join a ' + room[num]);
+    var clients = io.sockets.adapter.rooms.get(room[num]);
+    var numClients = clients.size;
     io.to(room[num]).emit('joinRoom', num, name);
+    if (numClients === 1) {
+      io.to(room[num]).emit('notFullRoom');
+    }
+    else if (numClients === 2) {
+      io.to(room[num]).emit('fullRoom');
+    }
   };
   async function leaveRoom(num, name) {
-    await socket.leave(room[num]);
     console.log(name + ' leave a ' + room[num]);
+    await socket.leave(room[num]);
     io.to(room[num]).emit('leaveRoom', num, name);
+    io.to(room[num]).emit('notFullRoom');
   };
 });
 
