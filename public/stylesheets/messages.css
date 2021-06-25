@@ -1,0 +1,53 @@
+#op {
+    width: 160px;
+    padding: 15px 32px;
+}
+
+#startBtn {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: 16px 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#startBtn:hover {
+    background-color: grey;
+    color: white;
+}
+
+#messages {
+    list-style-type: none;
+    margin: 0px;
+    margin-top: 8px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+#messages li {
+    padding: 4px 6px;
+}
+
+#messages li:nth-child(odd) {
+    background: #eee;
+}
+
+#chat {
+    padding: 2px;
+    width: 100%;
+    bottom: 0px;
+    position: fixed;
+}
+
+#chat input {
+    padding: 10px;
+    width: 90%;
+}
+
+#chat button {
+    padding: 10px;
+    width: 8%;
+    right: 2px;
+    position: fixed;
+}
