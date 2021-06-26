@@ -21,12 +21,16 @@
     background-color: lightgrey;
     color: white;
 }
+
 #messages {
     list-style-type: none;
     margin: 0px;
     margin-top: 8px;
+    margin-bottom: 60px;
     padding: 0px;
     box-sizing: border-box;
+    overflow: scroll;
+    height: 440px;
 }
 
 #messages li {
