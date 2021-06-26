@@ -17,6 +17,10 @@
     color: white;
 }
 
+#startBtn:disabled {
+    background-color: lightgrey;
+    color: white;
+}
 #messages {
     list-style-type: none;
     margin: 0px;

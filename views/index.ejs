@@ -17,7 +17,7 @@
     <option value="Room1">Room1</option>
     <option value="Room2">Room2</option>
   </select>
-  <button id="startBtn" style="display: none;">START</button>
+  <button id="startBtn" disabled>START</button>
   <ul id="messages"></ul>
   <form id="chat" action="">
     <input id="chatBox" placeholder="상대방과 자유롭게 채팅하세요." />
@@ -57,16 +57,16 @@
 
       socket.on('leaveRoom', (num, name) => {
         $('#messages').append($('<li>').text("[System] " + name + ' leaved ' + room[num]));
-        $('#startBtn').hide();
+        $('#startBtn').attr('disabled',true);
       });
 
       socket.on('notFullRoom', () => {
-        $('#startBtn').hide();
+        $('#startBtn').attr('disabled',true);
         $('#messages').append($('<li>').text("[System] 상대가 없습니다. 상대가 들어올 때까지 기다려주세요."));
       })
 
       socket.on('fullRoom', () => {
-        $('#startBtn').show();
+        $('#startBtn').attr('disabled',false);
         $('#messages').append($('<li>').text("[System] 방이 다 찼습니다. start 버튼을 클릭해 게임을 시작해주세요."));
       })
     });
