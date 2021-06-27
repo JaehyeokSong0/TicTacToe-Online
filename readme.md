@@ -11,7 +11,7 @@
 4. 주기적인 리팩토링으로 프로젝트 구조 개선
 5. [다음 프로젝트](https://github.com/JaehyeokSong0/ProjectSocket) 진행의 기반 다지기
 
-## 일정
-1. ocket 통해 tictactoe 멀티플레이 구현
-2. 배포용으로 변환
+## 잔여 일정
+1. Socket 통해 tictactoe 멀티플레이 구현
+2. 배포용으로 변환 (AWS or Heroku 예정)
 3. 리팩토링, 모듈화 통한 구조 개선
