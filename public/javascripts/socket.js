@@ -19,6 +19,10 @@ $('select').change(() => {
     socket.emit('joinRoom', num, id);
 });
 
+$('#startBtn').click(()=> {
+    socket.emit('startGame',num);
+});
+
 $('#chat').submit((e) => {
     e.preventDefault();
     socket.emit('sendMsg', num, id, $('#chatBox').val());
@@ -33,7 +37,6 @@ socket.on('sendMsg', (id, msg) => {
 socket.on('joinRoom', (num, id) => {
     $('#messages').append($('<li>').text("[System] " + id + ' joined ' + room[num]));
     autoScroll();
-
 });
 
 socket.on('leaveRoom', (num, id) => {
@@ -53,3 +56,7 @@ socket.on('fullRoom', () => {
     $('#messages').append($('<li>').text("[System] 방이 다 찼습니다. start 버튼을 클릭해 게임을 시작해주세요."));
     autoScroll();
 });
+
+export default function getSocket() {
+    return socket;
+}

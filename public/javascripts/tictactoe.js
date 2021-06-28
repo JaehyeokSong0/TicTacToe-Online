@@ -1,5 +1,6 @@
 var body = document.body;
 var tictactoe = document.createElement('div');
+tictactoe.id = "tictactoe";
 var table = document.createElement('table');
 var result = document.createElement('div');
 result.style.textAlign = "center";
@@ -8,7 +9,13 @@ result.textContent = " ";
 var cell = [];
 var turn = 'O';
 var turnCnt = 0;
-
+// TEST CODE START
+import getSocket from "./socket.js";
+const socket = getSocket();
+socket.on('startGame',(num)=>{
+    activateGame();
+});
+// TEST CODE END
 var ttt = function (e) {
     var nRow = e.target.parentNode.rowIndex;
     var nCol = e.target.cellIndex;
@@ -43,7 +50,6 @@ var ttt = function (e) {
         //줄이 만들어졌을 경우
         if (hasLine) {
             result.textContent = "Congratulation! " + turn + " Wins!";
-            //body.append(result);
             init();
         } else {
             if (turn === 'X') {
@@ -55,7 +61,6 @@ var ttt = function (e) {
 
             if (turnCnt === 9) {
                 result.textContent = "Draw!";
-                //body.append(result);
                 init();
             }
         }
@@ -71,18 +76,29 @@ var init = function () {
         });
     });
 }
-//테이블 생성
-for (var i = 0; i < 3; i++) {
-    var row = document.createElement('tr');
-    cell.push([]);
-    for (var j = 0; j < 3; j++) {
-        var col = document.createElement('td');
-        col.addEventListener('click', ttt);
-        cell[i].push(col);
-        row.appendChild(col);
+//테이블 생성 후 비활성화
+var createTable = function(callback) {
+    for (var i = 0; i < 3; i++) {
+        var row = document.createElement('tr');
+        cell.push([]);
+        for (var j = 0; j < 3; j++) {
+            var col = document.createElement('td');
+            cell[i].push(col);
+            row.appendChild(col);
+        }
+        table.appendChild(row);
     }
-    table.appendChild(row);
+    callback;
 }
+//게임 비활성화
+function deactivateGame() {
+    $('td').off('click');
+}
+//게임 활성화
+function activateGame() {
+    $('td').on('click',ttt);
+}
+createTable(deactivateGame());
 tictactoe.appendChild(table);
 tictactoe.appendChild(result);
 body.appendChild(tictactoe);
