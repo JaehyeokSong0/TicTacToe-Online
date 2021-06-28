@@ -1,10 +1,13 @@
 var body = document.body;
+var tictactoe = document.createElement('div');
 var table = document.createElement('table');
+var result = document.createElement('div');
+result.style.textAlign = "center";
+result.style.whiteSpace = "pre"
+result.textContent = " ";
 var cell = [];
 var turn = 'O';
 var turnCnt = 0;
-var result = document.createElement('div');
-result.style.textAlign = "center";
 
 var ttt = function (e) {
     var nRow = e.target.parentNode.rowIndex;
@@ -40,18 +43,19 @@ var ttt = function (e) {
         //줄이 만들어졌을 경우
         if (hasLine) {
             result.textContent = "Congratulation! " + turn + " Wins!";
-            body.append(result);
+            //body.append(result);
             init();
         } else {
             if (turn === 'X') {
                 turn = 'O';
             } else {
                 turn = 'X';
-            } turnCnt++;
+            }
+            turnCnt++;
 
             if (turnCnt === 9) {
                 result.textContent = "Draw!";
-                body.append(result);
+                //body.append(result);
                 init();
             }
         }
@@ -79,4 +83,6 @@ for (var i = 0; i < 3; i++) {
     }
     table.appendChild(row);
 }
-body.appendChild(table);
+tictactoe.appendChild(table);
+tictactoe.appendChild(result);
+body.appendChild(tictactoe);
