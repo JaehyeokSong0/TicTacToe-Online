@@ -17,44 +17,47 @@ import {
     autoScroll
 } from "./socket.js";
 socket.on('startGame', () => {
-    activateGame();
     $('#messages').append($('<li>').text("[System] 게임이 시작되었습니다"));
     autoScroll();
+    init();
 });
 socket.on('clickBlock', (nRow, nCol, turn) => {
     cell[nRow][nCol].textContent = turn;
-    nextTurn(checkLine(nRow,nCol));
-})
-
-// TEST CODE END
+    nextTurn(checkLine(nRow, nCol, turn));
+});
+socket.on('initTurnX', () => {
+    turn = 'X';
+});
+socket.on('initTurnO', () => {
+    turn = 'O';
+});
 var ttt = function (e) {
     var nRow = e.target.parentNode.rowIndex;
     var nCol = e.target.cellIndex;
-    if (cell[nRow][nCol].textContent === '') {
-        socket.emit('clickBlock', num, nRow, nCol, turn);
-        console.log(turn);
+    console.log(turn, turnCnt);
+    if (((turnCnt % 2 == 0) && (turn == 'O')) || (turnCnt % 2 == 1) && (turn == 'X')) {
+        if (cell[nRow][nCol].textContent === '') {
+            socket.emit('clickBlock', num, nRow, nCol, turn);
+        }
     }
 }
 var nextTurn = function (hasLine) {
     //줄이 만들어졌을 경우
     if (hasLine) {
-        result.textContent = "Congratulation! " + turn + " Wins!";
-        init();
+        if (turnCnt % 2 == 0)
+            result.textContent = "Congratulation! O Wins!";
+        else
+            result.textContent = "Congratulation! X Wins!";
+        deactivateGame();
     } else {
-        if (turn === 'X') {
-            turn = 'O';
-        } else {
-            turn = 'X';
-        }
         turnCnt++;
-
         if (turnCnt === 9) {
             result.textContent = "Draw!";
-            init();
+            deactivateGame();
         }
     }
 }
-var checkLine = function (nRow,nCol) {
+var checkLine = function (nRow, nCol, turn) {
     //가로줄 완성
     if (cell[nRow][0].textContent === turn &&
         cell[nRow][1].textContent === turn &&
@@ -83,13 +86,14 @@ var checkLine = function (nRow,nCol) {
 }
 //승패가 갈리거나, 모든 칸이 꽉 차면 테이블 초기화
 var init = function () {
-    turn = 'O';
     turnCnt = 0;
+    console.log(turn);
     cell.forEach(function (row) {
         row.forEach(function (col) {
             col.textContent = '';
         });
     });
+    activateGame();
 }
 //테이블 생성 후 비활성화
 var createTable = function (callback) {

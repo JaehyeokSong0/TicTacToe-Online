@@ -15,7 +15,7 @@ socket.emit('joinRoom', num, id);
 $('select').change(() => {
     socket.emit('leaveRoom', num, id);
     num++;
-    num = num % 2; //본격적인 구현 시 로직 수정 필요
+    num = num % 2;
     socket.emit('joinRoom', num, id);
 });
 

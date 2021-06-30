@@ -43,8 +43,8 @@ io.on('connection', (socket) => {
   socket.on('joinRoom', joinRoom);
   socket.on('leaveRoom', leaveRoom);
   socket.on('sendMsg', sendMsg);
-  socket.on('startGame',startGame);
-  socket.on('clickBlock',clickBlock);
+  socket.on('startGame', startGame);
+  socket.on('clickBlock', clickBlock);
 
   async function joinRoom(num, name) {
     await socket.join(room[num]);
@@ -64,15 +64,21 @@ io.on('connection', (socket) => {
     io.to(room[num]).emit('leaveRoom', num, name);
     io.to(room[num]).emit('notFullRoom');
   };
+
   function sendMsg(num, name, msg) {
     io.to(room[num]).emit('sendMsg', name, msg);
   };
+
   function startGame(num) {
     io.to(room[num]).emit('startGame');
+    //자신의 턴을 'O'로 상대의 턴을 'X'로 바꿈
+    //-> 게임을 시작한 사람이 'O'로 시작하게 됨
+    socket.broadcast.to(room[num]).emit('initTurnX');
+    socket.emit('initTurnO');
   };
-  function clickBlock(num,nRow,nCol,turn)
-  {
-    io.to(room[num]).emit('clickBlock',nRow,nCol,turn);
+
+  function clickBlock(num, nRow, nCol, turn) {
+    io.to(room[num]).emit('clickBlock', nRow, nCol, turn);
   };
 });
 
