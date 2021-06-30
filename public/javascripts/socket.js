@@ -19,8 +19,8 @@ $('select').change(() => {
     socket.emit('joinRoom', num, id);
 });
 
-$('#startBtn').click(()=> {
-    socket.emit('startGame',num);
+$('#startBtn').click(() => {
+    socket.emit('startGame', num);
 });
 
 $('#chat').submit((e) => {
@@ -57,7 +57,8 @@ socket.on('fullRoom', () => {
     autoScroll();
 });
 
-/*export default function getSocket() {
-    return socket;
-}*/
-export {socket, autoScroll};
+export {
+    socket,
+    num,
+    autoScroll
+};

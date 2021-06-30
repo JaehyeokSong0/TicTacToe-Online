@@ -44,6 +44,7 @@ io.on('connection', (socket) => {
   socket.on('leaveRoom', leaveRoom);
   socket.on('sendMsg', sendMsg);
   socket.on('startGame',startGame);
+  socket.on('clickBlock',clickBlock);
 
   async function joinRoom(num, name) {
     await socket.join(room[num]);
@@ -67,7 +68,11 @@ io.on('connection', (socket) => {
     io.to(room[num]).emit('sendMsg', name, msg);
   };
   function startGame(num) {
-    io.to(room[num]).emit('startGame',num);
+    io.to(room[num]).emit('startGame');
+  };
+  function clickBlock(num,nRow,nCol,turn)
+  {
+    io.to(room[num]).emit('clickBlock',nRow,nCol,turn);
   };
 });
 
