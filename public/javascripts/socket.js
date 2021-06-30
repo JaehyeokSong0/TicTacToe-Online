@@ -57,6 +57,7 @@ socket.on('fullRoom', () => {
     autoScroll();
 });
 
-export default function getSocket() {
+/*export default function getSocket() {
     return socket;
-}
+}*/
+export {socket, autoScroll};

@@ -10,10 +10,12 @@ var cell = [];
 var turn = 'O';
 var turnCnt = 0;
 // TEST CODE START
-import getSocket from "./socket.js";
-const socket = getSocket();
-socket.on('startGame',(num)=>{
+import {socket,autoScroll} from "./socket.js";
+var _socket = socket;
+_socket.on('startGame',(num)=>{
     activateGame();
+    $('#messages').append($('<li>').text("[System] 게임이 시작되었습니다"));
+    autoScroll();
 });
 // TEST CODE END
 var ttt = function (e) {
