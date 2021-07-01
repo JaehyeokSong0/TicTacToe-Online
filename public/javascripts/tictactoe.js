@@ -7,7 +7,7 @@ result.style.textAlign = "center";
 result.style.whiteSpace = "pre"
 result.textContent = " ";
 var cell = [];
-var turn = 'O';
+var turn;
 var turnCnt = 0;
 
 //socket
@@ -31,10 +31,10 @@ socket.on('initTurnX', () => {
 socket.on('initTurnO', () => {
     turn = 'O';
 });
+
 var ttt = function (e) {
     var nRow = e.target.parentNode.rowIndex;
     var nCol = e.target.cellIndex;
-    console.log(turn, turnCnt);
     if (((turnCnt % 2 == 0) && (turn == 'O')) || (turnCnt % 2 == 1) && (turn == 'X')) {
         if (cell[nRow][nCol].textContent === '') {
             socket.emit('clickBlock', num, nRow, nCol, turn);
@@ -87,7 +87,6 @@ var checkLine = function (nRow, nCol, turn) {
 //승패가 갈리거나, 모든 칸이 꽉 차면 테이블 초기화
 var init = function () {
     turnCnt = 0;
-    console.log(turn);
     cell.forEach(function (row) {
         row.forEach(function (col) {
             col.textContent = '';
