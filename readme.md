@@ -12,5 +12,7 @@
 5. [다음 프로젝트](https://github.com/JaehyeokSong0/ProjectSocket) 진행의 기반 다지기
 
 ## 잔여 일정
-1. 배포용으로 변환 (AWS or Heroku 예정)
-2. 리팩토링, 모듈화 통한 구조 개선
+- 오류 수정
+    - 게임 시작 시 간헐적으로 turnCnt가 2개씩 증가하는 현상 수정
+- 추가 기능
+    - 사용자에게 턴에 대한 추가 정보 제공
