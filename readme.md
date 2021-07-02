@@ -10,3 +10,18 @@
 3. Socket.io를 이용한 서로 다른 사용자들 간의 게임 환경 구현
 4. 주기적인 리팩토링으로 프로젝트 구조 개선
 5. [다음 프로젝트](https://github.com/JaehyeokSong0/ProjectSocket) 진행의 기반 다지기
+
+## Getting Started
+1. Install
+```
+npm install
+```
+2. Launch server
+```
+npm start
+```
+3. Start  
+@ localhost:3000
+
+## Contact
+- [JaehyeokSong0](https://github.com/JaehyeokSong0)
