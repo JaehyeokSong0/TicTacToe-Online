@@ -18,7 +18,9 @@ import {
 } from "./socket.js";
 socket.on('startGame', () => {
     $('#messages').append($('<li>').text("[System] 게임이 시작되었습니다"));
+    console.log("1");
     autoScroll();
+    console.log("2");
     init();
 });
 socket.on('clickBlock', (nRow, nCol, turn) => {
@@ -26,15 +28,18 @@ socket.on('clickBlock', (nRow, nCol, turn) => {
     nextTurn(checkLine(nRow, nCol, turn));
 });
 socket.on('initTurnX', () => {
+    console.log("X init");
     turn = 'X';
 });
 socket.on('initTurnO', () => {
+    console.log("O init");
     turn = 'O';
 });
 
 var ttt = function (e) {
     var nRow = e.target.parentNode.rowIndex;
     var nCol = e.target.cellIndex;
+    console.log(turnCnt, turn);
     if (((turnCnt % 2 == 0) && (turn == 'O')) || (turnCnt % 2 == 1) && (turn == 'X')) {
         if (cell[nRow][nCol].textContent === '') {
             socket.emit('clickBlock', num, nRow, nCol, turn);
@@ -42,6 +47,7 @@ var ttt = function (e) {
     }
 }
 var nextTurn = function (hasLine) {
+    console.log("nT");
     //줄이 만들어졌을 경우
     if (hasLine) {
         if (turnCnt % 2 == 0)
@@ -86,6 +92,7 @@ var checkLine = function (nRow, nCol, turn) {
 }
 //승패가 갈리거나, 모든 칸이 꽉 차면 테이블 초기화
 var init = function () {
+    console.log("init");
     turnCnt = 0;
     cell.forEach(function (row) {
         row.forEach(function (col) {
@@ -114,6 +121,7 @@ function deactivateGame() {
 }
 //게임 활성화
 function activateGame() {
+    $('td').off('click'); //eventListener가 중복되지 않게 처리
     $('td').on('click', ttt);
 }
 createTable(deactivateGame());
