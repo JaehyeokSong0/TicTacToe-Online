@@ -2,11 +2,23 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    padding-bottom: 50px;
 }
 
 #op {
     width: 160px;
     padding: 15px 32px;
+}
+
+#msg summary {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 108px;
+    height: 48px;
+    border: 1px solid black;
+    background-color: lightgray;
+    text-align: center;
 }
 
 #startBtn {
@@ -32,7 +44,6 @@
     list-style-type: none;
     margin: 0px;
     margin-top: 8px;
-    margin-bottom: 60px;
     padding: 0px;
     box-sizing: border-box;
     overflow: scroll;
