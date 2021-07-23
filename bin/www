@@ -48,7 +48,6 @@ io.on('connection', (socket) => {
 
   async function joinRoom(num, name) {
     await socket.join(room[num]);
-    console.log(name + ' join a ' + room[num]);
     var clients = io.sockets.adapter.rooms.get(room[num]);
     var numClients = clients.size;
     io.to(room[num]).emit('joinRoom', num, name);
@@ -59,7 +58,6 @@ io.on('connection', (socket) => {
     }
   };
   async function leaveRoom(num, name) {
-    console.log(name + ' leave a ' + room[num]);
     await socket.leave(room[num]);
     io.to(room[num]).emit('leaveRoom', num, name);
     io.to(room[num]).emit('notFullRoom');
